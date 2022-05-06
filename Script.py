@@ -1,16 +1,35 @@
+from csv import writer
 from turtle import title
 import openpyxl
 import pandas as pd
 from openpyxl import load_workbook, workbook
 from openpyxl.utils import get_column_letter
+import xlwings as ws
+
+
+teamsExcel = 'C:/Users/e.sarmiento/Desktop/Excel documents/team-members/team-members.xlsx'
+masterExcel = 'C:/Users/e.sarmiento/Desktop/Excel documents/master05.xlsx'
+
+
+#se lee team members y masterExcel
+readTeamsExcel = pd.read_excel(teamsExcel)
+readMasterExcel = pd.read_excel(masterExcel, sheet_name='BD-Login')
+#se almacena teams
+dataT =pd.DataFrame(readTeamsExcel[['Date','User ID','Name','Email']])
+#se lee master para obtener fila de bd-login
+dataM = pd.DataFrame(readMasterExcel)
+datafiltered = dataM.dropna(subset=['Date'])
+lastindex =datafiltered.index[-1]
+ #se pega el team member en master
+dataT.to_excel(masterExcel,startrow=lastindex+2,index=False,header=False,sheet_name='BD-Login')
 
 
 
 
-archivo_excel = pd.read_excel('C:/Users/e.sarmiento/Desktop/Excel documents/team-members/team-members.xlsx')
-data =(archivo_excel[['Date','User ID','Name','Email']])
+ 
 
-data.to_excel('C:/Users/e.sarmiento/Desktop/Excel documents/master2.xlsx',startrow=0,sheet_name='Report',index=False,header=False)
+
+
 
 #archivo_excel_master =pd.read_excel('C:/Users/e.sarmiento/Desktop/Excel documents/master.xlsx')
 
